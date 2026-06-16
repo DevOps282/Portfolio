@@ -459,7 +459,7 @@
 
             <p id="form-error" class="hidden text-red-500 text-sm text-center" role="alert"></p>
             <p id="sent" class="hidden text-brandGreen text-sm text-center font-medium" role="status">
-              Merci ! Ton message a bien été envoyé ✦
+              Merci ! WhatsApp s'ouvre — appuie sur Envoyer pour finaliser ✦
             </p>
           </form>
 
@@ -538,12 +538,27 @@
         return;
       }
 
-      // Loading state
+      // Numéro WhatsApp de destination (format international, sans + ni espaces)
+      const WHATSAPP_NUMBER = '2250709450454';
+
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const msg = form.msg.value.trim();
+
+      // Message pré-rempli ouvert dans WhatsApp
+      const text =
+        `Bonjour Jacques, je viens de votre portfolio.\n\n` +
+        `Nom : ${name}\n` +
+        `Email : ${email}\n\n` +
+        `Message :\n${msg}`;
+
+      const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+
+      // Loading state (court, le temps d'ouvrir WhatsApp)
       submitBtn.disabled = true;
       submitBtn.classList.add('btn-loading');
 
-      // Simulate async send (replace with real fetch to your API)
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      window.open(waUrl, '_blank', 'noopener');
 
       submitBtn.classList.remove('btn-loading');
       submitBtn.disabled = false;
